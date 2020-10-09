@@ -20,13 +20,25 @@ exports.crearCodigoInterconexion = async (req, res) => {
             }
             res.status(200).send(registroCompleto);
         }
+        else{
+            const registroCompleto = {
+                valid: false,
+                msg: "No se puedo generar el codigo de interconexion",
+                data: {}
+            }
+            res.status(400).send(registroCompleto);
+        }
     } catch (error) {
-
+        const registroCompleto = {
+            valid: false,
+            msg: "Error al intentar crear el codigo de interconexion",
+            data: {}
+        }
+        res.status(400).send(registroCompleto);
     }
 }
 
 exports.verificarCondigoInterconexion = async (req, res) => {
-    console.log("entre");
     try {
         const registro = await Interconexion.findOne({ intx_code: req.params.id });
         if (registro) {
@@ -37,8 +49,18 @@ exports.verificarCondigoInterconexion = async (req, res) => {
                 } 
             })
         }
-
+        else{
+            res.status(400).send({
+                "valid": false,
+                "msg": "Código de interconexión no válido",
+                "data": {} 
+            })
+        }
     } catch (error) {
-
+        res.status(400).send({
+            "valid": false,
+            "msg": "Error al intentar verificar el código de interconexión",
+            "data": {} 
+        })
     }
 }
